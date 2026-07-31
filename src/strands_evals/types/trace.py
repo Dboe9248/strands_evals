@@ -167,7 +167,12 @@ class TraceLevelInput(BaseEvaluationInput):
 
 
 class ToolLevelInput(BaseEvaluationInput):
-    """Input for tool-level evaluators"""
+    """Input for tool-level evaluators.
+
+    `session_history` never includes the call under evaluation. Within the same trace, only tool
+    executions that completed before this tool started (`end_time <= start_time`) are included,
+    with list position as tiebreaker for equal timestamps. Cross-trace history is unfiltered.
+    """
 
     available_tools: list[ToolConfig]
     tool_execution_details: ToolExecutionSpan
